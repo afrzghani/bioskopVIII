@@ -1,0 +1,110 @@
+<!-- filepath: c:\Users\ghani\Downloads\Django\Django\Django\bioskop\pesantiket\templates\admin\tambaheditJadwal.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if edit %}Edit Jadwal{% else %}Tambah Jadwal{% endif %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .glass {
+            background: rgba(255,255,255,0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="w-full bg-white shadow flex items-center justify-between px-12 py-4 fixed top-0 left-0 z-10">
+        <div class="font-bold text-2xl tracking-wide">BloskopVIII ADMIN</div>
+        <div class="text-2xl font-bold mx-auto">{% if edit %}EDIT JADWAL{% else %}TAMBAH JADWAL{% endif %}</div>
+        <a href="{% url 'logoutView' %}" class="text-red-600 font-semibold hover:underline">Logout</a>
+    </header>
+    <div class="flex pt-14">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white min-h-screen shadow-lg flex flex-col px-8 py-8">
+            <nav class="flex flex-col gap-2">
+                <a href="{% url 'adminDashboard' %}" class="py-2 px-4 rounded-lg font-semibold text-gray-700 hover:bg-blue-100 transition mb-2">Dashboard</a>
+                <div class="mb-2 font-semibold text-gray-700">Kelola</div>
+                <a href="{% url 'kelolaFilm' %}" class="py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-100 transition">Film</a>
+                <a href="{% url 'kelolaJadwal' %}" class="py-2 px-4 rounded-lg bg-gray-200 text-gray-900 font-semibold">Jadwal</a>
+                <a href="{% url 'kelolaTiket' %}" class="py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-100 transition">Tiket</a>
+                <a href="{% url 'kelolaAkun' %}" class="py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-100 transition">Akun</a>
+            </nav>
+        </aside>
+        <!-- Main Content -->
+        <main class="flex-1 flex items-center justify-center px-8 py-8">
+            <div class="glass w-full p-8 mx-2">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">{% if edit %}Edit Jadwal{% else %}Tambah Jadwal{% endif %}</h2>
+                {% load widget_tweaks %}
+                <form method="POST" class="space-y-6">
+                    {% csrf_token %}
+                    <!-- Baris 1: Film (kiri), Tanggal (kanan) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block mb-2 font-semibold text-gray-800" for="{{ form.film.id_for_label }}">Film</label>
+                            {{ form.film|add_class:"w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white/80 transition" }}
+                            {% for error in form.film.errors %}
+                                <p class="text-xs text-red-500 mt-1">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <div>
+                            <label class="block mb-2 font-semibold text-gray-800" for="{{ form.tanggal.id_for_label }}">Tanggal</label>
+                            {{ form.tanggal|add_class:"w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white/80 transition" }}
+                            {% for error in form.tanggal.errors %}
+                                <p class="text-xs text-red-500 mt-1">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- Baris 2: Jam Tayang (kiri), Nama Bioskop (kanan) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block mb-2 font-semibold text-gray-800" for="{{ form.jamTayang.id_for_label }}">Jam Tayang</label>
+                            {{ form.jamTayang|add_class:"w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white/80 transition" }}
+                            {% for error in form.jamTayang.errors %}
+                                <p class="text-xs text-red-500 mt-1">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <div>
+                            <label class="block mb-2 font-semibold text-gray-800" for="{{ form.namaBioskop.id_for_label }}">Nama Bioskop</label>
+                            {{ form.namaBioskop|add_class:"w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white/80 transition" }}
+                            {% for error in form.namaBioskop.errors %}
+                                <p class="text-xs text-red-500 mt-1">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- Baris 3: Jenis Studio (kiri), Studio (kanan) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block mb-2 font-semibold text-gray-800" for="{{ form.jenisStudio.id_for_label }}">Jenis Studio</label>
+                            {{ form.jenisStudio|add_class:"w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white/80 transition" }}
+                            {% for error in form.jenisStudio.errors %}
+                                <p class="text-xs text-red-500 mt-1">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <div>
+                            <label class="block mb-2 font-semibold text-gray-800" for="{{ form.studio.id_for_label }}">Studio</label>
+                            {{ form.studio|add_class:"w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white/80 transition" }}
+                            {% for error in form.studio.errors %}
+                                <p class="text-xs text-red-500 mt-1">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2 rounded-lg shadow transition transform hover:scale-105">
+                        {% if edit %}Update{% else %}Simpan{% endif %}
+                    </button>
+                </form>
+                <div class="mt-6 text-center">
+                    <a href="{% url 'kelolaJadwal' %}" class="text-blue-500 hover:underline">&larr; Kembali ke daftar jadwal</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

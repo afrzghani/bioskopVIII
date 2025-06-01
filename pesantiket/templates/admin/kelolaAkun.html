@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kelola Akun</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <header class="w-full bg-white shadow flex items-center justify-between px-12 py-4 fixed top-0 left-0 z-10">
+        <div class="font-bold text-2xl tracking-wide">BloskopVIII ADMIN</div>
+        <div class="text-2xl font-bold mx-auto">KELOLA AKUN</div>
+        <a href="{% url 'logoutView' %}" class="text-red-600 font-semibold hover:underline">Logout</a>
+    </header>
+
+    <div class="flex pt-16">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white min-h-screen shadow-lg flex flex-col px-8 py-8">
+            <nav class="flex flex-col gap-2">
+                <a href="{% url 'adminDashboard' %}" class="py-2 px-4 rounded-lg font-semibold text-gray-700 hover:bg-blue-100 transition mb-2">Dashboard</a>
+                <div class="mb-2 font-semibold text-gray-700">Kelola</div>
+                <a href="{% url 'kelolaFilm' %}" class="py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-100 transition">Film</a>
+                <a href="{% url 'kelolaJadwal' %}" class="py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-100 transition">Jadwal</a>
+                <a href="{% url 'kelolaTiket' %}" class="py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-100 transition">Tiket</a>
+                <a href="{% url 'kelolaAkun' %}" class="py-2 px-4 rounded-lg bg-gray-200 font-semibold">Akun</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 px-8 py-8">
+            <div class="bg-white p-8 rounded-lg shadow">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Daftar Akun Pengguna</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                        <thead>
+                            <tr class="bg-gray-100 text-gray-700">
+                                <th class="py-3 px-4 text-left font-semibold">No</th>
+                                <th class="py-3 px-4 text-left font-semibold">Nama Lengkap</th>
+                                <th class="py-3 px-4 text-left font-semibold">Username</th>
+                                <th class="py-3 px-4 text-left font-semibold">Email</th>
+                                <th class="py-3 px-4 text-left font-semibold">No Telepon</th>
+                                <th class="py-3 px-4 text-left font-semibold">Peran</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in daftarUser %}
+                            <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                <td class="py-3 px-4">{{ forloop.counter }}</td>
+                                <td class="py-3 px-4">{{ user.nama }}</td>
+                                <td class="py-3 px-4">{{ user.username }}</td>
+                                <td class="py-3 px-4">{{ user.email }}</td>
+                                <td class="py-3 px-4">{{ user.noTelpLengkap }}</td>
+                                <td class="py-3 px-4">
+                                        {% if user.role == 'admin' %}
+                                            <span class="text-green-600 font-semibold">Admin</span> |
+                                            <a href="{% url 'ubahRole' user.id %}" class="text-blue-600 hover:underline"
+                                            onclick="return confirm('Jadikan sebagai user biasa?')">Jadikan User</a>
+                                        {% else %}
+                                            <span class="text-gray-600">User</span> |
+                                            <a href="{% url 'ubahRole' user.id %}" class="text-blue-600 hover:underline"
+                                            onclick="return confirm('Jadikan sebagai admin?')">Jadikan Admin</a>
+                                        {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center text-gray-500 py-6">Tidak ada akun pengguna.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

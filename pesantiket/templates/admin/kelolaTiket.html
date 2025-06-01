@@ -1,0 +1,109 @@
+<!-- filepath: c:\Users\ghani\Downloads\Django\Django\Django\bioskop\pesantiket\templates\admin\kelolaPemesanan.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kelola Tiket</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .glass {
+            background: rgba(255,255,255,0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="w-full bg-white shadow flex items-center justify-between px-12 py-4 fixed top-0 left-0 z-10">
+        <div class="font-bold text-2xl tracking-wide">BloskopVIII ADMIN</div>
+        <div class="text-2xl font-bold mx-auto">KELOLA TIKET</div>
+        <a href="{% url 'logoutView' %}" class="text-red-600 font-semibold hover:underline">Logout</a>
+    </header>
+    <div class="flex pt-14">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white min-h-screen shadow-lg flex flex-col px-8 py-8">
+            <nav class="flex flex-col gap-2">
+                <a href="{% url 'adminDashboard' %}" class="py-2 px-4 rounded-lg font-semibold text-gray-700 hover:bg-blue-100 transition mb-2">Dashboard</a>
+                <div class="mb-2 font-semibold text-gray-700">Kelola</div>
+                <a href="{% url 'kelolaFilm' %}" class="py-2 px-4 rounded-lg  text-gray-700 hover:bg-blue-100 transition">Film</a>
+                <a href="{% url 'kelolaJadwal' %}" class="py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-100 transition">Jadwal</a>
+                <a href="{% url 'kelolaTiket' %}" class="py-2 px-4 rounded-lg bg-gray-200 text-gray-700 font-semibold">Tiket</a>
+                <a href="{% url 'kelolaAkun' %}" class="py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-100 transition">Akun</a>
+            </nav>
+        </aside>
+        <!-- Main Content -->
+        <main class="flex-1 px-8 py-8">
+            <div class="glass p-8">
+                <h2 class="text-2xl font-bold text-gray-900 tracking-wide mb-8">Daftar Pemesanan</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white rounded-lg shadow glass">
+                        <thead>
+                            <tr>
+                                <th class="py-3 px-4 text-left text-blue-900 font-semibold">No</th>
+                                <th class="py-3 px-4 text-left text-blue-900 font-semibold">Nama User</th>
+                                <th class="py-3 px-4 text-left text-blue-900 font-semibold">Film</th>
+                                <th class="py-3 px-4 text-left text-blue-900 font-semibold">Jadwal</th>
+                                <th class="py-3 px-4 text-left text-blue-900 font-semibold">Kursi</th>
+                                <th class="py-3 px-4 text-left text-blue-900 font-semibold">Total Harga</th>
+                                <th class="py-3 px-4 text-left text-blue-900 font-semibold">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pemesanan in daftarPemesanan %}
+                            <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
+                                <td class="py-3 px-4 text-gray-800">{{ forloop.counter }}</td>
+                                <td class="py-3 px-4 text-gray-800">
+                                    {% if pemesanan.user.get_full_name %}
+                                        {{ pemesanan.user.get_full_name }}
+                                    {% elif pemesanan.user.username %}
+                                        {{ pemesanan.user.username }}
+                                    {% elif pemesanan.user.nama %}
+                                        {{ pemesanan.user.nama }}
+                                    {% else %}
+                                        User ID: {{ pemesanan.user.id }}
+                                    {% endif %}
+                                </td>
+                                <td class="py-3 px-4 text-gray-800">{{ pemesanan.jadwal.film.judulFilm }}</td>
+                                <td class="py-3 px-4 text-gray-800">
+                                    {{ pemesanan.jadwal.tanggal|date:"d M Y" }}<br>
+                                    {{ pemesanan.jadwal.jamTayang|time:"H:i" }}
+                                </td>
+                                <td class="py-3 px-4 text-gray-800">
+                                    {% for kursi in pemesanan.kursi.all %}
+                                        {{ kursi.nomorKursi }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td class="py-3 px-4 text-gray-800">Rp {{ pemesanan.totalHarga|floatformat:0 }}</td>
+                                <td>
+                                    {% if pemesanan.status %}
+                                        <span class="text-green-600 font-semibold">Terpakai</span>
+                                    {% else %}
+                                        <span class="text-yellow-600 font-semibold mr-2">Belum Terpakai</span>
+                                        <a href="{% url 'verifikasiTerpakai' pemesanan.id %}" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded transition"
+                                        onclick="return confirm('Verifikasi Tiket sudah digunakan?')">Verifikasi</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="py-4 text-center text-gray-400">Tidak ada Tiket</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-8">
+                    <a href="{% url 'adminDashboard' %}" class="text-blue-500 hover:underline">&larr; Kembali ke Dashboard</a>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

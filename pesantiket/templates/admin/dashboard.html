@@ -1,0 +1,62 @@
+<!-- filepath: c:\Users\ghani\Downloads\Django\Django\Django\bioskop\pesantiket\templates\admin\dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<style>
+        body { font-family: 'Poppins', sans-serif; }
+        .glass {
+            background: rgba(255,255,255,0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+    </style>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="w-full bg-white shadow flex items-center justify-between px-12 py-4 fixed top-0 left-0 z-10">
+        <div class="font-bold text-2xl tracking-wide">BloskopVIII ADMIN</div>
+        <div class="text-2xl font-bold mx-auto">DASHBOARD</div>
+        <a href="{% url 'logoutView' %}" class="text-red-600 font-semibold hover:underline">Logout</a>
+    </header>
+    <div class="flex pt-14">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white min-h-screen shadow-lg flex flex-col px-8 py-8">
+            <nav class="flex flex-col gap-2">
+                <a href="{% url 'adminDashboard' %}" class="py-2 px-4 rounded-lg font-semibold bg-gray-200 text-gray-900 mb-2">Dashboard</a>
+                <div class="mb-2 font-semibold text-gray-700">Kelola</div>
+                <a href="{% url 'kelolaFilm' %}" class="py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-100 transition">Film</a>
+                <a href="{% url 'kelolaJadwal' %}" class="py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-100 transition">Jadwal</a>
+                <a href="{% url 'kelolaTiket' %}" class="py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-100 transition">Tiket</a>
+                <a href="{% url 'kelolaAkun' %}" class="py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-100 transition">Akun</a>
+            </nav>
+        </aside>
+        <!-- Main Content -->
+        <main class="flex-1 px-8 py-8">
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <h2 class="text-2xl font-bold mb-8 text-gray-900 tracking-wide">STATISTIK APLIKASI</h2>
+                <div class="flex flex-col md:flex-row gap-8 justify-center">
+                    <div class="flex-1 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex flex-col items-center justify-center py-8 shadow-lg">
+                        <span class="text-5xl font-extrabold text-white mb-2">{{ totalFilm }}</span>
+                        <span class="text-lg font-semibold text-white">Film Sedang Tayang</span>
+                    </div>
+                    <div class="flex-1 bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-xl flex flex-col items-center justify-center py-8 shadow-lg">
+                        <span class="text-5xl font-extrabold text-white mb-2">{{ totalJadwal }}</span>
+                        <span class="text-lg font-semibold text-white">Jadwal Tersedia</span>
+                    </div>
+                    <div class="flex-1 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex flex-col items-center justify-center py-8 shadow-lg">
+                        <span class="text-5xl font-extrabold text-white mb-2">{{ totalPemesanan }}</span>
+                        <span class="text-lg font-semibold text-white">Total Pemesanan</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

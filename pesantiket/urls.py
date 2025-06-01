@@ -1,0 +1,32 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('register/', views.registerView, name='registerView'),
+    path('accounts/login/', views.loginView, name='loginView'),
+    path('accounts/logout/', views.logoutView, name='logoutView'),
+    path('film/<int:id>/', views.detailFilm, name='detailFilm'),
+    path('film/<int:idFilm>/jadwal/', views.pilihJadwal, name='pilihJadwal'),
+    path('jadwal/<int:idJadwal>/kursi/', views.pilihKursi, name='pilihKursi'),
+    path('konfirmasi/', views.konfirmasiPembayaran, name='konfirmasiPembayaran'),
+    path('bayar/', views.prosesPembayaran, name='pembayaranSukses'),
+    path('riwayat/', views.riwayatPemesanan, name='riwayatPemesanan'),
+    path('tiket/<int:idPemesanan>/', views.detailTiket, name='tiketPemesanan'),
+    path('tiket/<int:idPemesanan>/pdf/', views.cetakTiket, name='cetakTiket'),
+    path('profil/', views.profilPengguna, name='profilPengguna'),
+    path('ubahPassword/', views.ubahPassword, name='ubahPassword'),
+    path('admin/dashboard/', views.adminDashboard, name='adminDashboard'),
+    path('admin/kelolaFilm/', views.kelolaFilm, name='kelolaFilm'),
+    path('admin/kelolaFilm/tambah/', views.tambahFilm, name='tambahFilm'),
+    path('admin/kelolaFilm/edit/<int:id>/', views.editFilm, name='editFilm'),
+    path('admin/kelolaFilm/hapus/<int:id>/', views.hapusFilm, name='hapusFilm'),
+    path('admin/kelolaJadwal/', views.kelolaJadwal, name='kelolaJadwal'),
+    path('admin/kelolaJadwal/tambah/', views.tambahJadwal, name='tambahJadwal'),
+    path('admin/kelolaJadwal/edit/<int:id>/', views.editJadwal, name='editJadwal'),
+    path('admin/kelolaJadwal/hapus/<int:id>/', views.hapusJadwal, name='hapusJadwal'),
+    path('admin/kelolaTiket/', views.kelolaTiket, name='kelolaTiket'),
+    path('admin/kelolaTiket/verifikasi/<int:id>/', views.verifikasiTiketTerpakai, name='verifikasiTerpakai'),
+    path('admin/kelolaAkun/', views.kelolaAkun, name='kelolaAkun'),
+    path('admin/kelolaAkun/ubahrole/<int:id>/', views.ubahRole, name='ubahRole'),
+]

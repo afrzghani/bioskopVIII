@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bioskop VIII</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+    body { font-family: 'Poppins', sans-serif; }
+  </style>
+</head>
+<body class="bg-white-100 min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="shadow flex items-center justify-between px-10 py-4">
+    <div class="text-white text-2xl font-bold px-6 py-2 rounded-lg bg-cover bg-center"
+         style="background-image: url('https://bobobox.com/blog/wp-content//uploads/elementor/thumbs/felix-mooneeram-evlkOfkQ5rE-unsplash-q5nt4xn0nbyu4okdmunzh8ohn9lgls317e7p1spbs4.jpg');">
+      Bloskop VIII
+    </div>
+    <div class="flex items-center gap-6 text-sm font-semibold px-4 py-2 rounded">
+        <a href="#" class="text-black hover:underline">Home</a>
+        <a href="{% url 'riwayatPemesanan' %}" class="text-black hover:underline">My Tickets</a>
+        <a href="{% url 'profilPengguna' %}" class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gray-200 hover:ring-2 hover:ring-blue-400 transition">
+            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M6 20c0-2.2 3.6-3.5 6-3.5s6 1.3 6 3.5"/>
+            </svg>
+        </a>
+    </div>
+</nav>
+
+
+<div class="w-full relative h-[480px] mb-6">
+  <div id="carousel" class="relative w-full h-full overflow-hidden">
+    <!-- Slides -->
+    <div class="flex transition-transform duration-500 h-full" style="transform: translateX(0%);" id="carousel-slides">
+      {% for film in carouselFilm %}
+      <div class="min-w-full h-full relative flex items-center">
+        <img src="{% if film.background %}{{ film.background.url }}{% else %}{{ film.poster.url }}{% endif %}" class="absolute inset-0 w-full h-full object-cover" alt="bg{{ forloop.counter }}">
+        <div class="absolute inset-0 bg-black/70"></div>
+        <div class="relative flex items-center h-full px-16 gap-10">
+          <img src="{{ film.poster.url }}" class="w-64 h-96 object-cover rounded-lg shadow-lg" alt="Poster {{ film.judulFilm }}">
+          <div class="text-white">
+            <h2 class="text-4xl font-extrabold mb-2">{{ film.judulFilm }}</h2>
+            <p class="mb-4 max-w-xl">{{ film.deskripsi|truncatechars:120 }}</p>
+            <div class="flex gap-6 text-lg mb-2">
+              <span>Durasi: {{ film.durasi }} menit</span>
+              <span>Genre: {{ film.genre }}</span>
+              <span>Rating Usia: {{ film.ratingUsia }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <!-- Carousel Dots -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+      <span class="w-2 h-2 bg-white rounded-full border-2 border-gray-400 cursor-pointer" data-slide="0"></span>
+      <span class="w-2 h-2 bg-white rounded-full border-2 border-gray-400 cursor-pointer" data-slide="1"></span>
+      <span class="w-2 h-2 bg-white rounded-full border-2 border-gray-400 cursor-pointer" data-slide="2"></span>
+    </div>
+  </div>
+</div>
+
+
+    <!-- Daftar Film dari Database -->
+    <div class="max-w-7xl mx-auto w-full mt-8 flex-1">
+        <h2 class="font-bold text-lg mb-4 ml-2" >Sedang Tayang</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+            {% for film in daftarFilm %}
+            <a href="{% url 'detailFilm' film.id %}" class="bg-white rounded-lg shadow-md border hover:shadow-xl flex flex-col items-center p-3 hover:scale-105 transition">
+                <img src="{{ film.poster.url }}" alt="{{ film.judulFilm }}" class="w-full h-80 object-cover rounded">
+                <span class="mt-3 text-sm font-bold text-center">{{ film.judulFilm }}</span>
+            </a>
+            {% empty %}
+            <div class="text-gray-500">Belum ada film yang tayang.</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-gray-300 py-12 mt-10">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center px-4 gap-8">
+            <div>
+                <span class="text-green-200 font-bold text-lg">B1OSKOP</span>
+                <p class="text-xs mt-2 max-w-xs">
+                    Best App For Movie Lovers In Indonesia!<br>
+                    Movie Entertainment Platform From Cinema To Online Movie Streaming Selections.
+                </p>
+            </div>
+            <div>
+                <div class="font-semibold text-sm mb-1">Contact</div>
+                <div class="text-xs">Email: b1oskop@gmail.com</div>
+                <div class="text-xs">Phone: +62 888 1234 9676</div>
+            </div>
+        </div>
+        <div class="text-center text-xs text-gray-400 mt-4">
+            © 2025 Bloskop - by. Nuris Ghani Reva Dinan. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+  const slides = document.getElementById('carousel-slides');
+  const dots = document.querySelectorAll('[data-slide]');
+  const totalSlides = dots.length;
+  let current = 0;
+  let intervalId;
+
+  function showSlide(idx) {
+    slides.style.transform = `translateX(-${idx * 100}%)`;
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('bg-blue-500', i === idx);
+      dot.classList.toggle('border-blue-500', i === idx);
+    });
+    current = idx;
+  }
+
+  function nextSlide() {
+    showSlide((current + 1) % totalSlides);
+  }
+
+  function startAutoSlide() {
+    intervalId = setInterval(nextSlide, 3000);
+  }
+
+  function stopAutoSlide() {
+    clearInterval(intervalId);
+  }
+
+  dots.forEach((dot, i) => dot.onclick = () => {
+    stopAutoSlide();
+    showSlide(i);
+    startAutoSlide();
+  });
+
+  showSlide(0);
+  startAutoSlide();
+</script>
+</body>
+</html>

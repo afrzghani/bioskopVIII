@@ -1,0 +1,115 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tiket PDF</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .ticket-container {
+            width: 400px;
+            margin: 30px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px #bbb;
+            padding: 24px 32px;
+        }
+        .ticket-title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #222831;
+            margin-bottom: 18px;
+        }
+        .section {
+            margin-bottom: 12px;
+        }
+        .label {
+            color: #888;
+            font-size: 12px;
+        }
+        .value {
+            font-weight: bold;
+            color: #222831;
+            font-size: 15px;
+        }
+        .divider {
+            border-top: 1px dashed #bbb;
+            margin: 18px 0;
+        }
+        .details-table {
+            width: 100%;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+        .details-table td {
+            padding: 4px 0;
+        }
+        .total-row {
+            font-weight: bold;
+            border-top: 1px solid #bbb;
+        }
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket-container">
+        <div class="ticket-title">TIKET BIOSKOP</div>
+        <div class="section">
+            <span class="label">Judul Film:</span><br>
+            <span class="value">{{ pemesanan.jadwal.film.judulFilm }}</span>
+        </div>
+        <div class="section">
+            <span class="label">Bioskop:</span><br>
+            <span class="value">{{ pemesanan.jadwal.namaBioskop }}</span>
+        </div>
+        <div class="section">
+            <span class="label">Tanggal & Jam:</span><br>
+            <span class="value">
+                {{ pemesanan.jadwal.tanggal|date:"l, d F Y" }} - {{ pemesanan.jadwal.jamTayang|time:"H:i" }}
+            </span>
+        </div>
+        <div class="section">
+            <span class="label">Studio / Kelas:</span><br>
+            <span class="value">{{ pemesanan.jadwal.studio }} / {{ pemesanan.jadwal.jenisStudio }}</span>
+        </div>
+        <div class="section">
+            <span class="label">Kursi:</span><br>
+            <span class="value">
+                {% for kursi in pemesanan.kursi.all %}
+                    {{ kursi.nomorKursi }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </span>
+        </div>
+        <div class="divider"></div>
+        <table class="details-table">
+            <tr>
+                <td>SEAT</td>
+                <td class="right">Rp{{ hargaKursi|floatformat:0|intcomma }} x{{ jumlahKursi }}</td>
+            </tr>
+            <tr>
+                <td>BIAYA LAYANAN</td>
+                <td class="right">Rp{{ biayaLayanan|floatformat:0|intcomma }} x{{ jumlahKursi }}</td>
+            </tr>
+            <tr>
+                <td>PROMO</td>
+                <td class="right">- Rp{{ promo|default:"0"|intcomma }}</td>
+            </tr>
+            <tr class="total-row">
+                <td>TOTAL</td>
+                <td class="right">Rp{{ totalHarga|floatformat:0|intcomma }}</td>
+            </tr>
+        </table>
+        <div class="center" style="margin-top:18px; font-size:12px; color:#888;">
+            Terima kasih telah memesan di Bloskop VIII!
+        </div>
+    </div>
+</body>
+</html>

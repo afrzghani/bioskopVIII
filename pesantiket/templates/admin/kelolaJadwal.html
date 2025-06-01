@@ -1,0 +1,113 @@
+<!-- filepath: c:\Users\ghani\Downloads\Django\Django\Django\bioskop\pesantiket\templates\admin\kelolaJadwal.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kelola Jadwal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .glass {
+            background: rgba(255,255,255,0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="w-full bg-white shadow flex items-center justify-between px-12 py-4 fixed top-0 left-0 z-10">
+        <div class="font-bold text-2xl tracking-wide">BloskopVIII ADMIN</div>
+        <div class="text-2xl font-bold mx-auto">KELOLA JADWAL</div>
+        <a href="{% url 'logoutView' %}" class="text-red-600 font-semibold hover:underline">Logout</a>
+    </header>
+    <div class="flex pt-14">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white min-h-screen shadow-lg flex flex-col px-8 py-8">
+            <nav class="flex flex-col gap-2">
+                <a href="{% url 'adminDashboard' %}" class="py-2 px-4 rounded-lg font-semibold text-gray-700 hover:bg-blue-100 transition mb-2">Dashboard</a>
+                <div class="mb-2 font-semibold text-gray-700">Kelola</div>
+                <a href="{% url 'kelolaFilm' %}" class="py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-100 transition">Film</a>
+                <a href="{% url 'kelolaJadwal' %}" class="py-2 px-4 rounded-lg bg-gray-200 text-gray-900 font-semibold">Jadwal</a>
+                <a href="{% url 'kelolaTiket' %}" class="py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-100 transition">Tiket</a>
+                <a href="{% url 'kelolaAkun' %}" class="py-2 px-4 rounded-lg text-gray-700 hover:bg-blue-100 transition">Akun</a>
+            </nav>
+        </aside>
+        <!-- Main Content -->
+        <main class="flex-1 px-8 py-8">
+            <div class="glass p-8">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 tracking-wide">Daftar Jadwal</h2>
+                    <a href="{% url 'tambahJadwal' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg shadow transition duration-200">
+                        + Tambah Jadwal
+                    </a>
+                </div>
+                <!-- Filter Pilihan Film -->
+                <div class="mb-6">
+                    <label for="filmFilter" class="block mb-2 font-semibold text-gray-800">Pilih Film</label>
+                    <select id="filmFilter" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white/80 transition">
+                        <option value="">-- Semua Film --</option>
+                        {% for film in daftarFilm %}
+                            <option value="{{ film.id }}">{{ film.judulFilm }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Tabel Jadwal -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white rounded-lg shadow glass" id="jadwalTable">
+                        <thead>
+                            <tr>
+                                <th class="py-3 px-4 text-left text-blue-900 font-semibold">Film</th>
+                                <th class="py-3 px-4 text-left text-blue-900 font-semibold">Tanggal</th>
+                                <th class="py-3 px-4 text-left text-blue-900 font-semibold">Jam</th>
+                                <th class="py-3 px-4 text-left text-blue-900 font-semibold">Studio</th>
+                                <th class="py-3 px-4 text-left text-blue-900 font-semibold">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for jadwal in daftarJadwal %}
+                            <tr data-film="{{ jadwal.film.id }}">
+                                <td class="py-3 px-4 text-gray-800">{{ jadwal.film.judulFilm }}</td>
+                                <td class="py-3 px-4 text-gray-800">{{ jadwal.tanggal|date:"d M Y" }}</td>
+                                <td class="py-3 px-4 text-gray-800">{{ jadwal.jamTayang|time:"H:i" }}</td>
+                                <td class="py-3 px-4 text-gray-800">{{ jadwal.studio }}</td>
+                                <td class="py-3 px-4 flex gap-2">
+                                    <a href="{% url 'editJadwal' jadwal.id %}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded transition">Edit</a>
+                                    <a href="{% url 'hapusJadwal' jadwal.id %}" onclick="return confirm('Hapus jadwal ini?')" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition">Hapus</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="py-4 text-center text-gray-400">Tidak ada jadwal</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-8">
+                    <a href="{% url 'adminDashboard' %}" class="text-blue-500 hover:underline">&larr; Kembali ke Dashboard</a>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        // Filter jadwal berdasarkan film
+        document.getElementById('filmFilter').addEventListener('change', function() {
+            var filmId = this.value;
+            var rows = document.querySelectorAll('#jadwalTable tbody tr');
+            rows.forEach(function(row) {
+                if (!filmId || row.getAttribute('data-film') === filmId) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

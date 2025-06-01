@@ -1,0 +1,96 @@
+<!-- filepath: c:\Users\ghani\Downloads\Django\Django\bioskop\pesantiket\templates\pilihKursi.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pilih Kursi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+    body { font-family: 'Poppins', sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-10" style="background: url('https://bobobox.com/blog/wp-content//uploads/elementor/thumbs/felix-mooneeram-evlkOfkQ5rE-unsplash-q5nt4xn0nbyu4okdmunzh8ohn9lgls317e7p1spbs4.jpg') center/cover no-repeat;">
+    <div class="bg-black/80 shadow-xl rounded-3xl p-8 w-full max-w-3xl border border-blue-100">
+        <h2 class="text-2xl font-extrabold text-white mb-2 text-center">Pilih Kursi</h2>
+        <!-- Legenda -->
+        <div class="flex justify-center gap-6 mb-6 text-white text-sm">
+            <div><span class="inline-block w-4 h-4 bg-green-500 rounded mr-1"></span> Tersedia</div>
+            <div><span class="inline-block w-4 h-4 bg-gray-400 rounded mr-1"></span> Tidak Tersedia</div>
+            <div><span class="inline-block w-4 h-4 bg-green-300 border-2 border-green-700 rounded mr-1"></span> Pilihanmu</div>
+        </div>
+        <div class="text-center text-gray-200 mb-6">
+            <div class="font-semibold">{{ jadwal.film.judul }}</div>
+            <div class="text-sm">{{ jadwal.studio }} | {{ jadwal.jenisStudio }} | {{ jadwal.namaBioskop }}</div>
+            <div class="text-sm mb-2">{{ jadwal.tanggal }} - {{ jadwal.jamTayang|time:"H:i" }}</div>
+        </div>
+        <form method="post" id="formKursi">
+            {% csrf_token %}
+            <div class="flex flex-col items-center mb-6">
+                
+                <div class="grid grid-cols-10 gap-4 bg-black/60 p-6 rounded-xl">
+                    {% for kursi in listKursi %}
+                        <div>
+                            {% if kursi.status %}
+                                <button type="button" disabled
+                                    class="w-10 h-10 rounded bg-gray-400 text-white font-bold cursor-not-allowed shadow-inner">
+                                    {{ kursi.nomorKursi }}
+                                </button>
+                            {% else %}
+                                <label class="flex flex-col items-center">
+                                    <input type="checkbox" name="kursiTerpilih" value="{{ kursi.id }}"
+                                        data-harga="{{ kursi.harga }}" data-nomor="{{ kursi.nomorKursi }}"
+                                        class="peer sr-only kursi-checkbox">
+                                    <span class="w-10 h-10 rounded bg-green-100 text-green-700 font-bold flex items-center justify-center border-2 border-green-400 peer-checked:bg-green-300 peer-checked:text-green-900 peer-checked:border-green-700 shadow cursor-pointer transition">
+                                        {{ kursi.nomorKursi }}
+                                    </span>
+                                </label>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="bg-gray-200 rounded-t-lg w-3/4 h-6 mb-8 flex items-center justify-center text-xs text-gray-700">LAYAR BIOSKOP</div>
+            </div>
+            <!-- Ringkasan -->
+            <div class="flex justify-between items-center mt-6 px-4">
+                <div>
+                    <div class="text-xs text-gray-200">TOTAL</div>
+                    <div id="totalHarga" class="text-blue-300 font-bold">Rp0</div>
+                </div>
+                <div>
+                    <div class="text-xs text-gray-200">KURSI</div>
+                    <div id="kursiTerpilih" class="text-blue-300 font-bold">-</div>
+                </div>
+            </div>
+            <!-- Tombol -->
+            <div class="flex justify-center gap-4 mt-8">
+                <a href="{% url 'pilihJadwal' jadwal.film.id %}" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded-lg shadow transition">Kembali</a>
+                <button type="submit"
+                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg shadow transition">
+                    Bayar Sekarang
+                </button>
+            </div>
+        </form>
+    </div>
+    <script>
+        // Update total harga dan kursi terpilih
+        const checkboxes = document.querySelectorAll('.kursi-checkbox');
+        const totalHarga = document.getElementById('totalHarga');
+        const kursiTerpilih = document.getElementById('kursiTerpilih');
+        function updateRingkasan() {
+            let total = 0;
+            let kursi = [];
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    total += parseInt(cb.dataset.harga);
+                    kursi.push(cb.dataset.nomor);
+                }
+            });
+            totalHarga.textContent = 'Rp ' + total.toLocaleString('id-ID');
+            kursiTerpilih.textContent = kursi.length ? kursi.join(', ') : '-';
+        }
+        checkboxes.forEach(cb => cb.addEventListener('change', updateRingkasan));
+    </script>
+</body>
+</html>

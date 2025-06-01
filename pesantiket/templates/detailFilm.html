@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bloskop VIII - {{ film.judulFilm }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+  </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="shadow flex items-center justify-between px-10 py-4">
+    <div class="text-white text-2xl font-bold px-6 py-2 rounded-lg bg-cover bg-center"
+         style="background-image: url('https://bobobox.com/blog/wp-content//uploads/elementor/thumbs/felix-mooneeram-evlkOfkQ5rE-unsplash-q5nt4xn0nbyu4okdmunzh8ohn9lgls317e7p1spbs4.jpg');">
+      Bloskop VIII
+    </div>
+    <div class="flex items-center gap-6 text-sm font-semibold px-4 py-2 rounded">
+        <a href="{% url 'home' %}" class="text-black hover:underline">Home</a>
+        <a href="{% url 'riwayatPemesanan' %}" class="text-black hover:underline">My Tickets</a>
+        <a href="{% url 'profilPengguna' %}" class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gray-200 hover:ring-2 hover:ring-blue-400 transition">
+            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M6 20c0-2.2 3.6-3.5 6-3.5s6 1.3 6 3.5"/>
+            </svg>
+        </a>
+    </div>
+</nav>
+
+
+  <section class="relative w-full h-[720px] flex items-center">
+      <!-- Background -->
+      <img src="{% if film.background %}{{ film.background.url }}{% else %}{{ film.poster.url }}{% endif %}" class="absolute inset-0 w-full h-full object-cover" alt="bg">
+      <div class="absolute inset-0 bg-black/70"></div>
+      <div class="relative flex items-center h-full px-32 gap-24 z-10 w-full">
+        <!-- Poster -->
+        <img src="{{ film.poster.url }}" alt="{{ film.judulFilm }} Poster" class="w-64 h-96 object-cover rounded-lg shadow-lg">
+        <!-- Info -->
+        <div class="text-white max-w-2xl">
+          <h1 class="text-4xl font-bold mb-4">{{ film.judulFilm }}</h1>
+          <p class="text-lg leading-relaxed mb-8">{{ film.deskripsi }}</p>
+          <div class="flex flex-col text-lg mb-2">
+            <p>Durasi: {{ film.durasi }} menit</p>
+            <p>Genre: {{ film.genre }}</p>
+            <p>Rating Usia: {{ film.ratingUsia }}</p>
+          </div>
+          <div class="mt-8">
+            <a href="{% url 'pilihJadwal' film.id %}">
+              <button class="bg-red-600 hover:bg-red-700 text-white py-3 px-48 rounded text-lg font-semibold">Beli tiket</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <!-- Footer -->
+    <footer class="bg-slate-800 text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center px-4 gap-8">
+            <div>
+                <span class="text-green-200 font-bold text-lg">B1OSKOP</span>
+                <p class="text-xs mt-2 max-w-xs">
+                    Best App For Movie Lovers In Indonesia!<br>
+                    Movie Entertainment Platform From Cinema To Online Movie Streaming Selections.
+                </p>
+            </div>
+            <div>
+                <div class="font-semibold text-sm mb-1">Contact</div>
+                <div class="text-xs">Email: b1oskop@gmail.com</div>
+                <div class="text-xs">Phone: +62 888 1234 9676</div>
+            </div>
+        </div>
+        <div class="text-center text-xs text-gray-400 mt-4">
+            © 2025 Bloskop - by. Nuris Ghani Reva Dinan. All Rights Reserved.
+        </div>
+    </footer>
+</body>
+</html>
