@@ -1,9 +1,12 @@
 # bioskopVIII
 Program ini dibuat sebagai projek akhir mata kuliah Pemrograman Berorientasi Objek
 
+# User View
 ![Screenshot 2025-06-01 204009](https://github.com/user-attachments/assets/fb24ee8e-e247-400c-a6de-5f21320fca65)
 ![Screenshot 2025-06-01 122149](https://github.com/user-attachments/assets/d1ce42d9-63d2-4394-833e-a996bed39b58)
 ![Screenshot 2025-06-01 123056](https://github.com/user-attachments/assets/0aa8714f-1f32-43a0-ad3e-fdf87544e0be)
+
+# Admin View
 ![Screenshot 2025-06-01 123503](https://github.com/user-attachments/assets/466f4a57-ff72-47db-a93d-4e75bd60d1ca)
 
 # Pre-requisite :
@@ -28,5 +31,11 @@ venv\Scripts\activate
 (( INSTALL PRE-REQUISITE ))
 cd bioskop
 python manage.py runserver
+```
+
+# Login
+```
+Admin : admin8 qwerty123
+User : ( silahkan register )
 ```
 
