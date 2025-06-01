@@ -1,5 +1,12 @@
 # bioskopVIII
-Program ini dibuat sebagai projek akhir mata kuliah Pemrograman Berorientasi Objek
+Program ini dibuat sebagai projek akhir mata kuliah Pemrograman Berorientasi Objek, TI semester 2, Kelompok 8
+
+|         NIM         |             NAMA            |
+|---------------------|-----------------------------|
+|     24051204112     |     Nuris Safira Rohmah     |
+|     24051204119     |     Mahdi Ghani Afriza      |
+|     24051204123     |     Revalina Natasya S      |
+|     24051204128     |     Perdinan Darman S       |
 
 # User View
 ![Screenshot 2025-06-01 204009](https://github.com/user-attachments/assets/fb24ee8e-e247-400c-a6de-5f21320fca65)
